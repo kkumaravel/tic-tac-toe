@@ -1,14 +1,16 @@
-import React from 'react';
+import React, { PropsWithChildren } from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-function Square (props) {
+
+
+function Square(props: { onClick: React.MouseEventHandler<HTMLButtonElement> | undefined; value: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | React.ReactPortal | null | undefined; }){
   return (
     <button className = 'square' onClick = {props.onClick}>{props.value}</button>
   );
 }
 
-class Board extends React.Component {
-  constructor(props) {
+class Board extends React.Component<{},any>{
+  constructor(props: {} | Readonly<{}>) {
     super(props);
     this.state = {
       squares: Array(9).fill(null),
@@ -16,9 +18,8 @@ class Board extends React.Component {
     };
   }
 
-  handleClick(i){
-    if (this.state.squares[i] === null){
-      if (!calculateWinner(this.state.squares)){
+  handleClick(i: number){
+    if (!calculateWinner(this.state.squares) && this.state.squares[i] === null){
         const squares = this.state.squares.slice();
         squares[i] = this.state.xIsNext ? 'X' : 'O';
         this.setState({
@@ -26,10 +27,9 @@ class Board extends React.Component {
           xIsNext: !this.state.xIsNext,
     });
   }}
-  }
 
 
-  renderSquare(i) {
+  renderSquare(i : number) {
     return ( <Square 
     value={this.state.squares[i]}
     onClick={() => this.handleClick(i)}
@@ -84,7 +84,7 @@ class Game extends React.Component {
     );
   }
 }
-function calculateWinner(squares) {
+function calculateWinner(squares : Array<any>) {
   const lines = [
     [0, 1, 2],
     [3, 4, 5],
@@ -106,5 +106,5 @@ function calculateWinner(squares) {
 
 // ========================================
 
-const root = ReactDOM.createRoot(document.getElementById("root"));
+const root = ReactDOM.createRoot(document.getElementById("root")!);
 root.render(<Game />);
